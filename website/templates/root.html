@@ -1,0 +1,110 @@
+{% extends "base.html" %}
+{% block title %}The L.M.C. - Welcome!{% endblock %}
+
+{% block main %}
+<div class="container-fluid">
+                <div class="row">
+                    <!-- Column for the LMC instruction set table -->
+                  <div class="col-lg-6 bg-light mh-100 overflow-auto">
+                      <h6 class="my-3"><u>The LMC Instruction Set</u></h6>
+                          <table class="table table-light table-striped">
+                              <thead>
+                                <tr>
+                                    <th scope="col">Instruction</th>
+                                    <th scope="col">Mnemonic</th>
+                                    <th scope="col">Purpose</th>
+                                </tr>
+                              </thead>
+                              <tbody>
+                                    <tr>
+                                        <td>Add</td>
+                                        <td>ADD</td>
+                                        <td>Add the value at the given memory address to the value in the Accumulator.</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Subtract</td>
+                                        <td>SUB</td>
+                                        <td>Subtract the value at the given memory address.</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Store in main memory</td>
+                                        <td>STO</td>
+                                        <td>Store the value in the Accumulator at the given memory address.</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Load into Accumulator</td>
+                                        <td>LDA</td>
+                                        <td>Load the value at the given memory address into the Accumulator.</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Input into Accumulator</td>
+                                        <td>INP</td>
+                                        <td>Allows the user to input a value which will be held in the Accumulator.</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Output Accumulator value</td>
+                                        <td>OUT</td>
+                                        <td>Prints the value currently held in the Accumulator.</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Halt program</td>
+                                        <td>HLT</td>
+                                        <td>Stops the program at that line.</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Store data</td>
+                                        <td>DAT</td>
+                                        <td>Creates a variable with a string identifier (chosen by the user) which data is stored under.</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Branch always</td>
+                                        <td>BRA</td>
+                                        <td>Branches to a given address/line no matter the value in the Accumulator. This is an unconditional branch.</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Branch if positive OR zero</td>
+                                        <td>BRP</td>
+                                        <td>Branches to a given address if the value in the Accumulator is either positive or zero. This is a conditional branch.</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Branch if zero</td>
+                                        <td>BRZ</td>
+                                        <td>Branches to a given address if the value in the Accumulator is zero. This is a conditional branch.</td>
+                                    </tr>
+                              </tbody>
+                          </table>
+                  </div>
+                    <!-- Column for updates & warnings -->
+                  <div class="col-lg-6">
+                      <h6 class="my-3"><u>Updates & Warnings</u></h6>
+                      <div class="alert alert-info" role="alert">
+                          <p><b>The LMC assembly syntax is based on the OCR A-Level Computer Science (H046, H446) specification!</b></p>
+                          <hr/>
+                          <p>Other exam boards and institutions may teach a different syntax not compatible with this simulation.
+                          </p>
+                      </div>
+                      <div class="alert alert-info" role="alert">
+                          <p><b>This site is not intended for use on mobile and tablet devices!</b></p>
+                          <hr/>
+                          <p>The simulation has neither been developed for nor tested on mobile or tablet devices.</p>
+                      </div>
+                      <div class="alert alert-info" role="alert">
+                          <p><b>You can use this simulation without an account!</b></p>
+                          <hr/>
+                          <p>Just press 'proceed to simulation' on the top navigation bar.
+                             You will be able to use the simulation normally.
+                             However, you will not be able to access previously saved code.
+                          </p>
+                      </div>
+                      <div class="alert alert-danger" role="alert">
+                          <p><b>Don't expect too much from this simulation!</b></p>
+                          <hr/>
+                          <p>This was made by a single teenager against his better judgement.
+                             It's very likely full of major bugs which I will never get around to fixing.
+                             If you actually need to learn LMC assembly, use <a href="https://peterhigginson.co.uk/lmc/">this simulation</a> or <a href="https://wellingborough.github.io/LMC/LMC0.3.html">this one</a>.
+                          </p>
+                      </div>
+                  </div>
+                </div>
+            </div>
+{% endblock %}

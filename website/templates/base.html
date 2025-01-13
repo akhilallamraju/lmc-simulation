@@ -1,0 +1,40 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport"
+              content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+        <meta http-equiv="X-UA-Compatible" content="ie=edge">
+        <link rel="stylesheet" href="{{ url_for('static', filename='bootstrap/css/bootstrap.min.css') }}">
+        <title>{% block title %}Title{% endblock %}</title>
+    </head>
+    <body>
+        <script src="{{ url_for('static', filename='bootstrap/js/bootstrap.bundle.min.js') }}"></script>
+
+        <header class="mb-5">
+            <nav class="navbar navbar-expand-lg bg-primary navbar-dark fixed-top border-bottom border-dark">
+              <div class="container-fluid">
+                  <a class="navbar-brand display-1" href="/"><b>The Little Man Computer</b></a>
+                <div class="btn-group" role="group">
+                    {% block navbar_buttons %}
+                  <a href="/login" type="button" class="btn btn-outline-secondary">Log In or Register</a>
+                  <a href="/simulation" type="button" class="btn btn-outline-secondary">Proceed to Simulation</a>
+                    {% endblock %}
+                </div>
+              </div>
+            </nav>
+        </header>
+        <main>
+            {% block main %}
+
+            {% endblock %}
+        </main>
+        {% block footer_config %}
+        <footer class="bg-dark py-3">
+        {% endblock %}
+            <div class="text-center">
+                <span class="text-white-50">&copy; 2025 V. S. Akhil Allamraju. All rights reserved.</span>
+            </div>
+        </footer>
+    </body>
+</html>

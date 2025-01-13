@@ -1,0 +1,10 @@
+# Directory for local Python virtual environment
+.venv
+
+# Contains passwords & private keys
+/website/.env
+
+# Pycharm project configuration settings
+.idea
+
+__pycache__
