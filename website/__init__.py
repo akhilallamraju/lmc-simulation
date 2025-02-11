@@ -6,18 +6,26 @@ This file will be run as soon as this directory is imported to an external Pytho
 from flask import Flask
 from dotenv import load_dotenv
 import os
+from flask_sqlalchemy import SQLAlchemy
 
 # Loads all the variables in the '.env' file
 load_dotenv()
+
+# Defining our database object
+db = SQLAlchemy()
 
 
 # This is the factory function.
 # Any configuration, registration, and other setup the application needs will happen inside the function.
 def create_app():
     app = Flask(__name__)
+
+    app.config['SQLALCHEMY_DATABASE_URI'] = f"sqlite:///{os.getenv('DB_NAME')}"
     # Private key for the encryption of cookies
     # Loaded from the '.env' file
     app.config['SECRET_KEY'] = os.getenv('SECRET_KEY')
+
+    db.init_app(app)
 
     # Imports blueprint objects from the specified file
     # This gives Flask information on how to construct the web app (structure, auth. rules, etc)

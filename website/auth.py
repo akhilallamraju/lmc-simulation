@@ -17,11 +17,13 @@ def login():
         confirm_password = request.form.get('confirm-password')
 
         # User input validation for account creation/registration. The rules are:
-        # - Username must be unique
+        # - Username must be unique (TODO when the database is implemented)
         # - Length of username <= 16 characters
         # - Password must be at least 8 characters
         # - 'password' must be identical to 'confirm_password'
         if login_or_register == "register":
+            # Username uniqueness check to go here
+
             if len(username) == 0 or len(password) == 0 or len(confirm_password) == 0:
                 flash("One or more input fields are empty.", category="error")
 
@@ -33,6 +35,10 @@ def login():
 
             elif password != confirm_password:
                 flash("Your two password inputs are not the same.", category="error")
+
+            else:
+                # Account registration successful
+                pass
 
     # If the webpage intends to receive data
     elif request.method == 'GET':

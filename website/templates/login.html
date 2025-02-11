@@ -7,6 +7,20 @@
 {% endblock %}
 
 {% block main %}
+<!-- Alerts for failed logins -->
+    {% with messages = get_flashed_messages(with_categories = true) %}
+        {% if messages %}
+            {% for message in messages %}
+                <div class="alert alert-dismissible alert-danger fade show">
+                    {{ message[1] }}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+            {% endfor %}
+        {% endif %}
+    {% endwith %}
+
 <!-- Main card -->
 <section class="py-3 py-md-4 mt-4">
     <div class="container">
@@ -16,7 +30,7 @@
             <div class="card-body p-3 p-md-4 p-xl-5">
             <h3 class="fs-6 fw-normal text-center text-dark mb-4">Log in or Register!</h3>
                 <!-- Input Form -->
-            <form action="#!" method="post">
+            <form method="post">
                 <hr class="border-dark"/>
                 <div class="form-check">
                   <input class="form-check-input" type="radio" name="logInOrRegister" id="loginRadio" value="login">
