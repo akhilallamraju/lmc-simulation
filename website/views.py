@@ -15,3 +15,8 @@ views = Blueprint('views', __name__)  # This will hold all the URLs for the page
 # This function is run when a user enters the root page.
 def root():
     return render_template("root.html")
+
+
+@views.route('/simulation')
+def simulation():
+    return render_template("simulation.html")

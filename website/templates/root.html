@@ -2,6 +2,18 @@
 {% block title %}The L.M.C. - Welcome!{% endblock %}
 
 {% block main %}
+    {% with messages = get_flashed_messages(with_categories = true) %}
+        {% if messages %}
+            {% for message in messages %}
+                <div class="alert alert-dismissible alert-success fade show">
+                    {{ message[1] }}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+            {% endfor %}
+        {% endif %}
+    {% endwith %}
 <div class="container-fluid">
                 <div class="row">
                     <!-- Column for the LMC instruction set table -->

@@ -1,11 +1,12 @@
 # Where the website's database's structure will be modelled.
 from . import db
 from flask_login import UserMixin
+from sqlalchemy.sql import func
 
 
 # Establishing the structure (fields) of the table 'Users'
-class User(db.Model, UserMixin):
-    id = db.Column(db.Integer, primary_key=True)
+class Users(db.Model, UserMixin):
+    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     username = db.Column(db.String(16), unique=True, nullable=False)
     password = db.Column(db.String(150), nullable=False)
-    asm_file_name = db.Column(db.String(150), nullable=False)
+    asm_file_name = db.Column(db.String(150))
