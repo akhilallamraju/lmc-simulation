@@ -1,0 +1,288 @@
+{% extends "base.html" %}
+{% block title %}The L.M.C. - Simulation{% endblock %}
+
+{% block navbar %}
+<nav class="navbar navbar-expand-lg bg-primary navbar-dark fixed-top border-bottom border-dark">
+    <div class="container-fluid">
+        <!-- Left-aligned items (button group) -->
+        <div class="me-auto">
+            <a class="navbar-brand display-1" href="/">
+                <b>The Little Man Computer</b>
+                <span class="badge rounded-pill bg-light text-dark">Logged in!</span>
+            </a>
+        </div>
+        <!-- Right-aligned items (account icon/drop-down) -->
+        <div class="ms-auto">
+
+        </div>
+    </div>
+</nav>
+{% endblock %}
+
+{% block main %}
+<div class="row w-auto">
+    <!-- Text Editor -->
+    <div class="col-lg-4 overflow-y-auto">
+        <div class="container mt-4">
+         <div class="table-responsive" style="max-height: 80vh; overflow-y: auto;">
+            <table class="table table-bordered table-sm">
+                <thead class="table-light sticky-top">
+                    <tr>
+                        <th scope="col">Line</th>
+                        <th scope="col">Label</th>
+                        <th scope="col">Opcode</th>
+                        <th scope="col">Operand</th>
+                    </tr>
+                </thead>
+                <tbody id="textEditor">
+                    <!-- Rows will be inserted here by JavaScript (/static/js/text-editor-rows-generator.js) -->
+                </tbody>
+            </table>
+        </div>
+        <button id="assembleButton" class="btn btn-primary w-100 mt-3">Assemble</button>
+    </div>
+    </div>
+    <!-- CPU, I/O & Console -->
+    <div class="col-lg-4 vh-100 bg-light pt-2">
+        <h6 class="my-3"><u>CPU</u></h6>
+        <!-- PC & ACC -->
+        <table class="table table-primary table-striped table-bordered" id="main-registers">
+            <thead>
+                <tr>
+                    <th>PC</th>
+                    <th>ACC</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td id="pc-val">00</td>
+                    <td id="acc-val">00</td>
+                </tr>
+            </tbody>
+        </table>
+        <!-- Other Registers (MDR, MDR, CIR) -->
+        <table class="table table-primary table-striped table-bordered" id="other-registers">
+            <thead>
+                <tr>
+                    <th>MDR</th>
+                    <th>MAR</th>
+                    <th>CIR</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td id="mdr-val">00</td>
+                    <td id="mar-val">00</td>
+                    <td id="cir-val">00</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <hr/>
+
+        <!-- Input/Output -->
+        <div class="row">
+            <div class="col-lg-6">
+                <form action="/simulation">
+                    <div class="form">
+                        <label for="userInput" class="h6"><u>Input</u></label>
+                        <input type="number" class="form-control" id="userInput" name="userInput" placeholder="Numerical input here">
+                    </div>
+                </form>
+            </div>
+            <div class="col-lg-6">
+                <span class="h6"><u>Output</u></span>
+                <div class="card mt-2">
+                  <div class="card-body py-1" id="output">-</div>
+                </div>
+            </div>
+        </div>
+
+        <hr/>
+
+        <!-- Console -->
+        <h6><u>Console</u></h6>
+        <div class="card bg-dark text-monospace text-white">
+            <div class="card-body" id="console">
+                >>>
+            </div>
+        </div>
+    </div>
+    <!-- Main Memory -->
+    <div class="col-lg-4 vh-100 pt-2 bg-secondary">
+            <!-- Instruction Memory -->
+            <div class="row">
+                <h6 class="pt-3 pl-3 mb-0 pb-0"><u>Instruction Memory</u></h6>
+                <table class="table table-striped table-secondary ml-3 mr-4 mt-3">
+                    <tr>
+                        <th class="p-0"></th>
+                        <th class="p-0">00</th>
+                        <th class="p-0">01</th>
+                        <th class="p-0">02</th>
+                        <th class="p-0">03</th>
+                        <th class="p-0">04</th>
+                        <th class="p-0">05</th>
+                        <th class="p-0">06</th>
+                        <th class="p-0">07</th>
+                        <th class="p-0">09</th>
+                        <th class="p-0">09</th>
+                    </tr>
+                    <tr>
+                        <th class="p-0">00</th>
+                        <td class="p-0" id="ima00">00</td>
+                        <td class="p-0" id="ima01">00</td>
+                        <td class="p-0" id="ima02">00</td>
+                        <td class="p-0" id="ima03">00</td>
+                        <td class="p-0" id="ima04">00</td>
+                        <td class="p-0" id="ima05">00</td>
+                        <td class="p-0" id="ima06">00</td>
+                        <td class="p-0" id="ima07">00</td>
+                        <td class="p-0" id="ima09">00</td>
+                        <td class="p-0" id="ima09">00</td>
+                    </tr>
+                    <tr>
+                        <th class="p-0">01</th>
+                        <td class="p-0" id="ima10">00</td>
+                        <td class="p-0" id="ima11">00</td>
+                        <td class="p-0" id="ima12">00</td>
+                        <td class="p-0" id="ima13">00</td>
+                        <td class="p-0" id="ima14">00</td>
+                        <td class="p-0" id="ima15">00</td>
+                        <td class="p-0" id="ima16">00</td>
+                        <td class="p-0" id="ima17">00</td>
+                        <td class="p-0" id="ima18">00</td>
+                        <td class="p-0" id="ima19">00</td>
+                    </tr>
+                    <tr>
+                        <th class="p-0">02</th>
+                        <td class="p-0" id="ima20">00</td>
+                        <td class="p-0" id="ima21">00</td>
+                        <td class="p-0" id="ima22">00</td>
+                        <td class="p-0" id="ima23">00</td>
+                        <td class="p-0" id="ima24">00</td>
+                        <td class="p-0" id="ima25">00</td>
+                        <td class="p-0" id="ima26">00</td>
+                        <td class="p-0" id="ima27">00</td>
+                        <td class="p-0" id="ima28">00</td>
+                        <td class="p-0" id="ima29">00</td>
+                    </tr>
+                    <tr>
+                        <th class="p-0">03</th>
+                        <td class="p-0" id="ima30">00</td>
+                        <td class="p-0" id="ima31">00</td>
+                        <td class="p-0" id="ima32">00</td>
+                        <td class="p-0" id="ima33">00</td>
+                        <td class="p-0" id="ima34">00</td>
+                        <td class="p-0" id="ima35">00</td>
+                        <td class="p-0" id="ima36">00</td>
+                        <td class="p-0" id="ima37">00</td>
+                        <td class="p-0" id="ima38">00</td>
+                        <td class="p-0" id="ima39">00</td>
+                    </tr>
+                    <tr>
+                        <th class="p-0">04</th>
+                        <td class="p-0" id="ima40">00</td>
+                        <td class="p-0" id="ima41">00</td>
+                        <td class="p-0" id="ima42">00</td>
+                        <td class="p-0" id="ima43">00</td>
+                        <td class="p-0" id="ima44">00</td>
+                        <td class="p-0" id="ima45">00</td>
+                        <td class="p-0" id="ima46">00</td>
+                        <td class="p-0" id="ima47">00</td>
+                        <td class="p-0" id="ima48">00</td>
+                        <td class="p-0" id="ima49">00</td>
+                    </tr>
+                </table>
+            </div>
+
+            <hr/>
+
+            <!-- Data Memory -->
+            <div class="row">
+                <h6 class="pt-2 pl-3"><u>Data Memory</u></h6>
+                <table class="table table-striped table-secondary ml-3 mr-4 mt-2">
+                    <tr>
+                        <th class="p-0"></th>
+                        <th class="p-0">00</th>
+                        <th class="p-0">01</th>
+                        <th class="p-0">02</th>
+                        <th class="p-0">03</th>
+                        <th class="p-0">04</th>
+                        <th class="p-0">05</th>
+                        <th class="p-0">06</th>
+                        <th class="p-0">07</th>
+                        <th class="p-0">09</th>
+                        <th class="p-0">09</th>
+                    </tr>
+                    <tr>
+                        <th class="p-0">00</th>
+                        <td class="p-0" id="dma00">00</td>
+                        <td class="p-0" id="dma01">00</td>
+                        <td class="p-0" id="dma02">00</td>
+                        <td class="p-0" id="dma03">00</td>
+                        <td class="p-0" id="dma04">00</td>
+                        <td class="p-0" id="dma05">00</td>
+                        <td class="p-0" id="dma06">00</td>
+                        <td class="p-0" id="dma07">00</td>
+                        <td class="p-0" id="dma09">00</td>
+                        <td class="p-0" id="dma09">00</td>
+                    </tr>
+                    <tr>
+                        <th class="p-0">01</th>
+                        <td class="p-0" id="dma10">00</td>
+                        <td class="p-0" id="dma11">00</td>
+                        <td class="p-0" id="dma12">00</td>
+                        <td class="p-0" id="dma13">00</td>
+                        <td class="p-0" id="dma14">00</td>
+                        <td class="p-0" id="dma15">00</td>
+                        <td class="p-0" id="dma16">00</td>
+                        <td class="p-0" id="dma17">00</td>
+                        <td class="p-0" id="dma18">00</td>
+                        <td class="p-0" id="dma19">00</td>
+                    </tr>
+                    <tr>
+                        <th class="p-0">02</th>
+                        <td class="p-0" id="dma20">00</td>
+                        <td class="p-0" id="dma21">00</td>
+                        <td class="p-0" id="dma22">00</td>
+                        <td class="p-0" id="dma23">00</td>
+                        <td class="p-0" id="dma24">00</td>
+                        <td class="p-0" id="dma25">00</td>
+                        <td class="p-0" id="dma26">00</td>
+                        <td class="p-0" id="dma27">00</td>
+                        <td class="p-0" id="dma28">00</td>
+                        <td class="p-0" id="i#dma29">00</td>
+                    </tr>
+                    <tr>
+                        <th class="p-0">03</th>
+                        <td class="p-0" id="dma30">00</td>
+                        <td class="p-0" id="dma31">00</td>
+                        <td class="p-0" id="dma32">00</td>
+                        <td class="p-0" id="dma33">00</td>
+                        <td class="p-0" id="dma34">00</td>
+                        <td class="p-0" id="dma35">00</td>
+                        <td class="p-0" id="dma36">00</td>
+                        <td class="p-0" id="dma37">00</td>
+                        <td class="p-0" id="dma38">00</td>
+                        <td class="p-0" id="dma39">00</td>
+                    </tr>
+                    <tr>
+                        <th class="p-0">04</th>
+                        <td class="p-0" id="dma40">00</td>
+                        <td class="p-0" id="dma41">00</td>
+                        <td class="p-0" id="dma42">00</td>
+                        <td class="p-0" id="dma43">00</td>
+                        <td class="p-0" id="dma44">00</td>
+                        <td class="p-0" id="dma45">00</td>
+                        <td class="p-0" id="dma46">00</td>
+                        <td class="p-0" id="dma47">00</td>
+                        <td class="p-0" id="dma48">00</td>
+                        <td class="p-0" id="dma49">00</td>
+                    </tr>
+                </table>
+            </div>
+    </div>
+</div>
+
+<script src="{{ url_for('static', filename='js/text-editor-rows-generator.js') }}"></script>
+{% endblock %}

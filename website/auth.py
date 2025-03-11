@@ -26,16 +26,28 @@ def login():
         # - 'password' must be identical to 'confirm_password'
         # - Username must be unique
         if login_or_register == "register":
+            # PATCHED ERROR: If 'password' was < 8 characters but was the same as 'confirm_password', the account...
+            # ...would still be made.
+            # FIX: 'valid' Boolean added. If any of the validation rules are violated, the Boolean would be set to...
+            # ...False. This Boolean is now the condition for instantiating an account in the database so, a...
+            # ...new account can now only be made if none of the if statements prior are triggered.
+            # REPRODUCE ERROR: Remove all references to 'valid' below and change, from the 2nd if statement, all if...
+            # ...statements to 'elif'.
+            valid = True
             if len(username) == 0 or len(password) == 0 or len(confirm_password) == 0:
+                valid = False
                 flash("One or more input fields are empty.", category="error")
 
-            elif len(username) > 16:
+            if len(username) > 16:
+                valid = False
                 flash("Your username cannot be greater than 16 characters.", category="error")
 
-            elif len(password) < 8:
+            if len(password) < 8:
+                valid = False
                 flash("Your password cannot be less than 8 characters.", category="error")
 
-            elif password != confirm_password:
+            if password != confirm_password:
+                valid = False
                 flash("Your two password inputs are not the same.", category="error")
 
             # Username uniqueness check:
@@ -45,9 +57,10 @@ def login():
             username_matches = Users.query.filter_by(username=username).first()
             # If there is a match (ie: an account corresponding to the inputted username)
             if username_matches:
+                valid = False
                 flash("Username already exists.", category="error")
 
-            else:
+            if valid:
                 # Account registration successful
                 new_user = Users(username=username,
                                  password=generate_password_hash(password),
@@ -67,31 +80,39 @@ def login():
                 # Generates a hashed version of the user-inputted password.
                 # This is then compared against the hashed password stored alongside the inputted username
 
-                # Stupid error: 'User.password' -> 'username_match.password'.
-                # Attempting to directly compare a string to an SQL table field did not work.
+                # Stupid error fixed: 'User.password' -> 'username_match.password'.
+                # Attempting to directly compare a string to an SQL table field, as expected, did not work.
 
-                # TODO: Fix error when comparing hashed passwords.
+                # DONE: Fix error when comparing hashed passwords.
                 # When hashing the password for registration and login, a different salt is being used to salt the hash.
                 # Therefore, the hashed password in the database will never match the user-inputted hashed password.
-                hashed_password = generate_password_hash(password)
-                print(hashed_password, username_match.password)
-                if check_password_hash(hashed_password, username_match.password):
+
+                # FIX: After reading the documentation of 'werkzeug.security', I realised that the parameters that...
+                # ...must be passed are the hashed password (stored in the DB) and the PLAINTEXT password (user input).
+                # Therefore, check_password_hash(hashed_password, username_match.password) becomes...
+                # check_password_hash(username_match.password, password) for proper validation.
+                # Lo and behold, the code works now and redirects users to the simulation page if their login...
+                # ...details are correct
+
+                if check_password_hash(username_match.password, password):
+                    # 'remember=True' means that a logged-in user will stay logged in until they clear their browsing...
+                    # ...data. Not part of the success criteria but a nice QoL feature.
+                    # Feature addition approved by client after discussion.
+                    login_user(username_match, remember=True)
                     return redirect(url_for('views.simulation'))
                 else:
                     flash(message="Incorrect password.", category="error")
             else:
                 flash("Username does not exist.", category="error")
 
-    # If the webpage intends to receive data
-    elif request.method == 'GET':
-        pass
-
     return render_template("login.html")
 
 
 @auth.route('/logout')
+@login_required
 def logout():
-    return "<h1>Logout Page</h1>"
+    logout_user()
+    return redirect(url_for("views.root"))
 
 
 @auth.route('/simulation')
