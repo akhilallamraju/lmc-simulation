@@ -2,6 +2,18 @@
 {% block title %}The L.M.C. - Welcome!{% endblock %}
 
 {% block main %}
+    {% with messages = get_flashed_messages(with_categories = true) %}
+        {% if messages %}
+            {% for message in messages %}
+                <div class="alert alert-dismissible alert-success fade show">
+                    {{ message[1] }}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+            {% endfor %}
+        {% endif %}
+    {% endwith %}
 <div class="container-fluid">
                 <div class="row">
                     <!-- Column for the LMC instruction set table -->
@@ -78,7 +90,7 @@
                   <div class="col-lg-6">
                       <h6 class="my-3"><u>Updates & Warnings</u></h6>
                       <div class="alert alert-info" role="alert">
-                          <p><b>The LMC assembly syntax is based on the OCR A-Level Computer Science (H046, H446) specification!</b></p>
+                          <p><b>This simulation is based on the OCR A-Level Computer Science (H046, H446) specification!</b></p>
                           <hr/>
                           <p>Other exam boards and institutions may teach a different syntax not compatible with this simulation.
                           </p>

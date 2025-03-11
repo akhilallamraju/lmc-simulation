@@ -6,4 +6,4 @@ app = create_app()
 # ie: the code within will not run if this file is imported elsewhere
 if __name__ == '__main__':
     # 'debug=True' - The virtual server updates every time the source code is modified
-    app.run(debug=True)
+    app.run(debug=True, port=8080)
