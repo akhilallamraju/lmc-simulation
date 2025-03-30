@@ -1,11 +1,13 @@
 """
 As the file name suggests, all authentication rules will be established here.
 """
-from flask import Blueprint, render_template, request, flash, redirect, url_for
+from flask import Blueprint, render_template, request, flash, redirect, url_for, jsonify
 from .models import Users
 from werkzeug.security import generate_password_hash, check_password_hash
 from . import db   # Means from __init__.py import db
 from flask_login import login_user, login_required, logout_user, current_user
+import os
+import json
 
 auth = Blueprint('auth', __name__)
 
@@ -63,8 +65,7 @@ def login():
             if valid:
                 # Account registration successful
                 new_user = Users(username=username,
-                                 password=generate_password_hash(password),
-                                 asm_file_name="")
+                                 password=generate_password_hash(password))
                 db.session.add(new_user)
                 db.session.commit()
                 flash(message="You have successfully created an account.", category="success")
@@ -103,7 +104,7 @@ def login():
                 else:
                     flash(message="Incorrect password.", category="error")
             else:
-                flash("Username does not exist.", category="error")
+                flash(message="Username does not exist.", category="error")
 
     return render_template("login.html")
 

@@ -8,4 +8,3 @@ from sqlalchemy.sql import func
 class Users(db.Model, UserMixin):
     username = db.Column(db.String(16), unique=True, nullable=False, primary_key=True)
     password = db.Column(db.String(150), nullable=False)
-    asm_file_name = db.Column(db.String(150))
